@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
-    public function showLoginForm()
-    {
-        return view('auth.admin_login');
-    }
 
     public function showRegistrationForm()
     {
@@ -22,42 +18,52 @@ class AdminAuthController extends Controller
 
     public function register(Request $request)
     {
+
+
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:admins',
-            'password' => 'required|string|min:8|confirmed',
+            'nama_admin' => 'required|string|max:255',
+            'password_admin' => 'required|string|min:8',
         ]);
 
         $admin = Admin::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'nama_admin' => $request->nama_admin,
+            'password_admin' => Hash::make($request->password_admin),
         ]);
 
-        Auth::login($admin);
 
-        return redirect()->route('admin.dashboard');
+        Auth::guard('admin')->login($admin);
+
+
+        return redirect()->route('admin.form');
+    }
+
+
+    public function showLoginForm()
+    {
+        return view('auth.admin_login');
     }
 
     public function login(Request $request)
     {
+
         $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+            'nama_admin' => 'required|string',
+            'password_admin' => 'required|string',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('admin.dashboard');
+
+        if (Auth::guard('admin')->attempt([
+            'nama_admin' => $request->nama_admin,
+            'password' => $request->password_admin,
+        ], $request->remember)) {
+
+
+            return redirect()->intended(route('admin.dashboard'));
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
-    }
 
-    public function logout()
-    {
-        Auth::logout();
-        return redirect()->route('login');
+        return back()->withErrors([
+            'nama_admin' => 'Nama atau password salah.',
+        ]);
     }
 }
