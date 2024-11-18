@@ -29,11 +29,15 @@
                         <tr class="border-b border-gray-200 hover:bg-gray-100">
                             <td class="py-3 px-6 text-left">{{ $index + 1 }}</td>
                             <td class="py-3 px-6 text-left">{{ $user->nama_user }}</td>
-
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+
+            <!-- Pagination for Users -->
+            <div class="flex justify-between">
+                {{ $users->links() }}
+            </div>
 
             <!-- Tabel untuk Menampilkan Pengajuan -->
             <h2 class="text-2xl font-semibold mb-4">Daftar Pengajuan</h2>
@@ -55,6 +59,11 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <!-- Pagination for Pengajuans -->
+            <div class="flex justify-between">
+                {{ $pengajuans->links() }}
+            </div>
         </div>
     </div>
 </body>

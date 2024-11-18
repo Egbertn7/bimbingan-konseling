@@ -72,4 +72,15 @@ class UserAuthController extends Controller
             'error' => 'Nama pengguna atau password salah.',
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Log the user out
+
+        $request->session()->invalidate(); // Invalidate the session
+
+        $request->session()->regenerateToken(); // Regenerate CSRF token to prevent session fixation attacks
+
+        return redirect()->route('home')->with('success', 'Anda telah berhasil logout!'); // Redirect to home or login page
+    }
 }

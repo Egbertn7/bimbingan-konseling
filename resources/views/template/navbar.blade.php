@@ -5,6 +5,11 @@
 
             @auth
                 <span class="text-sm/6 font-semibold text-white">{{ auth()->user()->nama_user }}</span>
+
+                <form method="POST" action="{{ route('logout.user') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="text-sm/6 font-semibold text-white">Logout</button>
+                </form>
             @else
                 <a href="{{ route('login') }}" class="text-sm/6 font-semibold text-white">Login</a>
             @endauth

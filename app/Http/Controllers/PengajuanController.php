@@ -24,6 +24,8 @@ class PengajuanController extends Controller
 
     public function store(Request $request)
     {
+
+
         $request->validate([
             'no_telp' => 'required|numeric',
             'masalah' => 'required|string|max:255',
